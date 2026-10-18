@@ -67,3 +67,23 @@ describe('parseAmountToCents', () => {
     expect(parseAmountToCents('about five grand').ok).toBe(false);
   });
 });
+
+describe('every rejection names the field it belongs to', () => {
+  it('attaches the issue to a path, so a form can show it', () => {
+    const result = leadInputSchema.safeParse({ ...base, email: 'not-an-email' });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      // A union schema reports at the root with an empty path, and a
+      // form mapping issues onto fields would then show nothing at all.
+      expect(result.error.issues.map((issue) => issue.path[0])).toEqual(['email']);
+    }
+  });
+
+  it('does the same for a bad date', () => {
+    const result = leadInputSchema.safeParse({ ...base, lastContactAt: '2026-02-30' });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues.map((issue) => issue.path[0])).toEqual(['lastContactAt']);
+    }
+  });
+});
