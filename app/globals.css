@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+/**
+ * LeadBoard is a working tool, so the interface itself is graphite and
+ * paper and colour is spent entirely on pipeline stage. A second accent
+ * hue would compete with the one thing colour has to communicate here.
+ *
+ * Every pair below was measured before it was written; the lowest text
+ * contrast in the set is 4.59:1 against a 4.5:1 requirement.
+ */
+@theme {
+  --color-paper: #f5f4f1;
+  --color-surface: #ffffff;
+  --color-ink: #1b1d1c;
+  --color-ink-soft: #333835;
+  --color-muted: #5c615e;
+  --color-line: #dcdad4;
+  --color-line-strong: #c4c1b8;
+
+  --color-stage-new: #4b5a73;
+  --color-stage-qualifying: #1f5fd0;
+  --color-stage-proposal: #9c6207;
+  --color-stage-negotiation: #6a3fa0;
+  --color-stage-won: #15603c;
+  --color-stage-lost: #9a2b25;
+
+  --color-good: #15603c;
+  --color-bad: #9a2b25;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Figures only line up in a column if the digits are one width. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+}
+
+@utility button-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  background: var(--color-ink);
+  padding: 0.5rem 0.875rem;
+  font-weight: 500;
+  color: var(--color-surface);
+
+  &:hover {
+    background: var(--color-ink-soft);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+@utility button-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 0.5rem 0.875rem;
+  font-weight: 500;
+
+  &:hover {
+    background: var(--color-paper);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
