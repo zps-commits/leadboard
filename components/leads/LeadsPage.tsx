@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pencil, Plus, Trash2, Users } from 'lucide-react';
 import { useCrm } from '@/components/providers/CrmProvider';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -10,7 +10,9 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Modal } from '@/components/ui/Modal';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { StageBadge } from '@/components/ui/StageBadge';
-import { SOURCE_LABELS, type Lead } from '@/lib/domain/lead';
+import { SOURCE_LABELS, type Lead, type LeadQuery } from '@/lib/domain/lead';
+import { applyQuery } from '@/lib/db/sorting';
+import { LeadFilters } from './LeadFilters';
 import { formatMoney, formatSince, today } from '@/lib/format';
 import { LeadForm } from './LeadForm';
 
@@ -22,6 +24,10 @@ export function LeadsPage() {
   const [creating, setCreating] = useState(search.get('new') === '1');
   const [editing, setEditing] = useState<Lead | null>(null);
   const [deleting, setDeleting] = useState<Lead | null>(null);
+  const [query, setQuery] = useState<LeadQuery>({ sort: 'recent' });
+  // The same function the repositories use, so the list on screen can
+  // never disagree with what a query would have returned.
+  const visible = useMemo(() => applyQuery(leads, query), [leads, query]);
   const now = today();
 
   function closeCreate(): void {
@@ -33,9 +39,7 @@ export function LeadsPage() {
     <div className="space-y-6 p-4 sm:p-6">
       <PageHeader
         title="Leads"
-        description={
-          loading ? 'Reading the pipeline…' : `${leads.length} in total, newest change first.`
-        }
+        description={loading ? 'Reading the pipeline…' : `${leads.length} in total.`}
         action={
           <button type="button" onClick={() => setCreating(true)} className="button-primary">
             <Plus aria-hidden="true" size={16} />
@@ -59,6 +63,27 @@ export function LeadsPage() {
       ) : null}
 
       {leads.length > 0 ? (
+        <LeadFilters
+          query={query}
+          onChange={setQuery}
+          resultCount={visible.length}
+          totalCount={leads.length}
+        />
+      ) : null}
+
+      {leads.length > 0 && visible.length === 0 ? (
+        <EmptyState
+          title="No lead matches this view"
+          description="Clear the filters, or widen the search, to see the pipeline again."
+          action={
+            <button type="button" onClick={() => setQuery({ sort: query.sort })} className="button-quiet">
+              Clear filters
+            </button>
+          }
+        />
+      ) : null}
+
+      {visible.length > 0 ? (
         <div className="card overflow-x-auto" tabIndex={0} role="region" aria-label="Leads">
           <table className="w-full min-w-[46rem] border-collapse text-sm">
             <caption className="sr-only">Every lead</caption>
@@ -75,7 +100,7 @@ export function LeadsPage() {
               </tr>
             </thead>
             <tbody>
-              {leads.map((lead) => (
+              {visible.map((lead) => (
                 <tr key={lead.id} className="border-t border-line">
                   <td className="px-4 py-2.5">
                     <Link href={`/leads/${lead.id}`} className="font-medium underline-offset-2 hover:underline">
