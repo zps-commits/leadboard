@@ -1,0 +1,61 @@
+# LinkedIn post — English
+
+**Images:** `composed/1-cover.png` … `4-build.png`, in that order (4:5).
+
+---
+
+The brief said "a small CRM, with SQLite, and deploy a demo". Those two
+things are in direct conflict, and the conflict is the interesting part.
+
+A serverless deployment has no disk that survives. Write a lead to a SQLite
+file on it and that lead may be gone on the next request, because the next
+request may land on a different instance. Nothing errors. Nothing warns.
+The lead is simply not there any more.
+
+A CRM that loses a lead without saying so is worse than no CRM.
+
+So LeadBoard has one repository interface and three implementations:
+
+• SQLite through Drizzle, locally, through server actions — the one that
+persists.
+• The visitor's own browser for the hosted demonstration, which also means
+no visitor can ever see another's pipeline.
+• An in-memory store, which the tests drive.
+
+The same sixteen-test contract runs against all three. That is what makes
+the choice safe rather than a fork: the code above the interface cannot
+tell which store it is writing to, and if two stores ever diverge, a test
+fails instead of someone's pipeline.
+
+It has already earned that. The text search was first written as SQL LIKE
+on one side and an accent-insensitive comparison on the other. LIKE folds
+case for ASCII only, so a search for "nucleo" would have found "Núcleo
+Design" in one store and missed it in the other.
+
+Three more decisions I would defend:
+
+• Won and lost deals are counted, but kept out of the pipeline value.
+Money already decided is not a forecast.
+• The win rate is null, not zero, until something has been decided.
+• Drag and drop is the shortcut, not the mechanism. Dragging is unusable
+with a keyboard, awkward with a screen reader and fiddly with a thumb, so
+every card carries a visible stage menu and each move is announced in a
+live region.
+
+The defect I did not see coming: on a phone the hosted copy scrolled 800
+pixels sideways into blank paper, on two pages, while every visible element
+measured inside the viewport. Visually hidden labels are absolutely
+positioned — with no positioned ancestor they escaped the scroller they sat
+inside and stretched the document to reach them.
+
+Next.js 16 · React 19 · TypeScript · Drizzle · SQLite · Tailwind v4
+97 tests · zero axe violations across five routes at four widths
+
+Live: https://07-leadboard.vercel.app
+Source: https://github.com/zps-commits/leadboard
+
+A portfolio build, not a deployed business. There is no authentication, the
+example pipeline is invented, and no client, user or revenue figure is
+claimed anywhere.
+
+#TypeScript #NextJS #SoftwareArchitecture #Accessibility #WebDevelopment
