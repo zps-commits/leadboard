@@ -38,7 +38,7 @@ export function LeadCard({
         onDragStart();
       }}
       onDragEnd={onDragEnd}
-      className={`card p-3 ${dragging ? 'opacity-50' : ''}`}
+      className={`card relative p-3 ${dragging ? 'opacity-50' : ''}`}
     >
       <div className="flex items-start gap-2">
         <GripVertical aria-hidden="true" size={16} className="mt-0.5 shrink-0 text-muted" />

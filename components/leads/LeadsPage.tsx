@@ -84,7 +84,16 @@ export function LeadsPage() {
       ) : null}
 
       {visible.length > 0 ? (
-        <div className="card overflow-x-auto" tabIndex={0} role="region" aria-label="Leads">
+        <div
+          /* `relative` is load-bearing. Visually hidden text is absolutely
+             positioned, and without a positioned ancestor its containing
+             block is the page: it escapes this scroller's clip and drags
+             the whole document sideways on a phone. */
+          className="card relative overflow-x-auto"
+          tabIndex={0}
+          role="region"
+          aria-label="Leads"
+        >
           <table className="w-full min-w-[46rem] border-collapse text-sm">
             <caption className="sr-only">Every lead</caption>
             <thead>

@@ -5,8 +5,11 @@
  * paper and colour is spent entirely on pipeline stage. A second accent
  * hue would compete with the one thing colour has to communicate here.
  *
- * Every pair below was measured before it was written; the lowest text
- * contrast in the set is 4.59:1 against a 4.5:1 requirement.
+ * Every pair below was measured before it was written — and measured
+ * again against the 10% tint each badge sits on, which is what axe
+ * actually checks. The amber was darkened from #9c6207 after that
+ * second measurement put it at 4.03:1 on a tinted card; the lowest in
+ * the set is now 4.61:1 against a 4.5:1 requirement.
  */
 @theme {
   --color-paper: #f5f4f1;
@@ -19,7 +22,7 @@
 
   --color-stage-new: #4b5a73;
   --color-stage-qualifying: #1f5fd0;
-  --color-stage-proposal: #9c6207;
+  --color-stage-proposal: #855305;
   --color-stage-negotiation: #6a3fa0;
   --color-stage-won: #15603c;
   --color-stage-lost: #9a2b25;

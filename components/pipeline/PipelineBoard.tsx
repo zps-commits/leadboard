@@ -54,7 +54,11 @@ export function PipelineBoard() {
           description="Add a lead and it will appear in the column of the stage you chose."
         />
       ) : (
-        <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
+        <div
+          /* `relative` keeps the cards' visually hidden labels inside this
+             scroller; see the note on the leads table. */
+          className="relative -mx-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6"
+        >
           <div className="flex min-w-max gap-4">
             {STAGES.map((stage) => {
               const column = leads.filter((lead) => lead.stage === stage);
