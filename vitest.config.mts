@@ -18,6 +18,10 @@ export default defineConfig({
     environment: 'jsdom',
     globals: false,
     setupFiles: ['./tests/setup.ts'],
+    // The interface tests drive the browser-backed store, which is the
+    // one the deployed demonstration uses. Pointing them at the server
+    // actions instead would test Next's plumbing, not this app.
+    env: { NEXT_PUBLIC_DATA_MODE: 'demo' },
     include: ['**/*.test.{ts,tsx}'],
     exclude: ['node_modules/**', '.next/**'],
   },
