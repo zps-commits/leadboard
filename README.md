@@ -49,6 +49,9 @@ visitor's leads in their own browser and says so on every page. That
 also means no visitor can see another's pipeline, which a single shared
 server store would not give you.
 
+`vercel.json` pins the deployment to `demo` at build time, so the
+hosted copy cannot fall back to a database that is not there.
+
 Both stores implement the same `LeadRepository` interface and are held
 to the same 16-test contract, so the application code above them does
 not know which one it is writing to. Set `NEXT_PUBLIC_DATA_MODE` to
