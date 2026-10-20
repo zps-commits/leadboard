@@ -3,6 +3,10 @@
 A small CRM for one person: leads, a six-stage pipeline, a history of
 every call and note, and a CSV export.
 
+**Live demonstration:** https://07-leadboard.vercel.app — it opens
+empty, and "Add the example pipeline" on the Settings page fills it.
+Everything you enter there stays in your own browser.
+
 ![The dashboard](docs/screenshots/dashboard.png)
 
 ## Running it
